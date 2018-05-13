@@ -1,10 +1,9 @@
 const express = require("express");
 
+const ApiController = require("../controllers/api-controller");
+
 const router = express.Router();
 
-router.get("/", (req, res) => {
-  res.json({ message: "it wsorks!" });
-  console.log("route hit");
-});
+router.route("/").post(ApiController.makeCall);
 
 module.exports = router;

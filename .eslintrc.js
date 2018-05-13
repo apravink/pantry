@@ -1,7 +1,8 @@
 module.exports = {
   plugins: ["prettier"],
   rules: {
-    "prettier/prettier": "error"
+    "prettier/prettier": ["error", { singleQuote: true }],
+    "linebreak-style": ["error", "windows"]
   },
-  extends: ["prettier"]
+  extends: ["airbnb-base", "prettier"]
 };
