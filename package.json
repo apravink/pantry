@@ -1,0 +1,26 @@
+{
+  "name": "pantry",
+  "version": "1.0.0",
+  "description": "Nodejs backend api for ingredients",
+  "main": "server.js",
+  "repository": "https://github.com/apravink/pantry.git",
+  "author": "Abhilash Kumar",
+  "license": "MIT",
+  "private": false,
+  "scripts": {
+    "start": "nodemon --inspect server.js"
+  },
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "express": "^4.16.3",
+    "prettier": "^1.12.1"
+  },
+  "devDependencies": {
+    "eslint": "^4.19.1",
+    "eslint-config-airbnb-base": "^12.1.0",
+    "eslint-config-prettier": "^2.9.0",
+    "eslint-plugin-import": "^2.11.0",
+    "eslint-plugin-prettier": "^2.6.0",
+    "nodemon": "^1.17.4"
+  }
+}
