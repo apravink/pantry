@@ -1,31 +1,9 @@
 /* eslint-env mocha */
 const { expect } = require('chai');
 const VisionService = require('./vision-service');
-const nock = require('nock');
-
-const GOOGLE_VISION_ENDPOINT = 'https://vision.googleapis.com/v1';
+const fs = require('fs');
 
 describe(`VisionService`, () => {
-  before(() => {
-    const visionResponse = {
-      responses: [
-        {
-          textAnnotations: [
-            {
-              description: [
-                'Chimpanzee killing palm oil stuff',
-                'Other bad stuff'
-              ]
-            }
-          ]
-        }
-      ]
-    };
-    nock(GOOGLE_VISION_ENDPOINT)
-      .post('/images:annotate')
-      .reply('200', visionResponse);
-  });
-
   it('should be a function of arity 1', () => {
     expect(VisionService.callVisionApi)
       .to.be.a('function')
@@ -33,29 +11,51 @@ describe(`VisionService`, () => {
   });
 
   it('it should throw error if input is not a string', () => {
-    //Arrange
+    // Arrange
 
     const badInput = 2;
 
-    //Assert
+    // Assert
+
     expect(() => VisionService.callVisionApi(badInput)).to.throw(
       'Input is not a valid base64 string'
     );
   });
 
-  it('should make a call to the vision api with the base64 string', () => {
-    //Arrange
+  it('should return an error object for invalid base64 string', done => {
+    // Arrange
     const encodedString = Buffer.from('YoYo').toString('base64');
-    const expectedResult = [
-      'Chimpanzee killing palm oil stuff',
-      'Other bad stuff'
-    ];
+    const expectedResult = {
+      error: {
+        code: 3,
+        message: 'Invalid image data.'
+      }
+    };
 
-    //Act
-    const actualResult = VisionService.callVisionApi(encodedString);
+    // Act
+    VisionService.callVisionApi(encodedString)
+      .then(actualResult => {
+        // Assert
+        expect(actualResult).to.deep.equal(expectedResult);
+      })
+      .catch(error => done(error));
+  });
+  it.only('should return an array of ingredients for a valid base64 image string', done => {
+    // Arrange
 
-    //Assert
+    fs.readFile('src/services/assets/test-image.png', 'base64', (err, data) => {
+      if (err) done();
+      else {
+        VisionService.callVisionApi(data)
+          .then(actualResult => {
+            console.log(actualResult);
+            expect([1, 2]).to.be.an('array');
+            done();
+          })
+          .catch(error => done(error));
+      }
+    });
 
-    expect(actualResult).to.equal(expectedResult);
+    // Act
   });
 });
