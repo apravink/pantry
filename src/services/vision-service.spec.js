@@ -6,25 +6,25 @@ const nock = require('nock');
 const GOOGLE_VISION_ENDPOINT = 'https://vision.googleapis.com/v1';
 
 describe(`VisionService`, () => {
-  before(() => {
-    const visionResponse = {
-      responses: [
-        {
-          textAnnotations: [
-            {
-              description: [
-                'Chimpanzee killing palm oil stuff',
-                'Other bad stuff'
-              ]
-            }
-          ]
-        }
-      ]
-    };
-    nock(GOOGLE_VISION_ENDPOINT)
-      .post('/images:annotate')
-      .reply('200', visionResponse);
-  });
+  // before(() => {
+  //   const visionResponse = {
+  //     responses: [
+  //       {
+  //         textAnnotations: [
+  //           {
+  //             description: [
+  //               'Chimpanzee killing palm oil stuff',
+  //               'Other bad stuff'
+  //             ]
+  //           }
+  //         ]
+  //       }
+  //     ]
+  //   };
+  //   nock(GOOGLE_VISION_ENDPOINT)
+  //     .post('/images:annotate')
+  //     .reply('200', visionResponse);
+  // });
 
   it('should be a function of arity 1', () => {
     expect(VisionService.callVisionApi)
@@ -43,7 +43,7 @@ describe(`VisionService`, () => {
     );
   });
 
-  it('should make a call to the vision api with the base64 string', () => {
+  it.only('should make a call to the vision api with the base64 string', () => {
     //Arrange
     const encodedString = Buffer.from('YoYo').toString('base64');
     const expectedResult = [
