@@ -1,5 +1,10 @@
-const config = require("../../config");
+const config = require('../../config');
+const
 
 exports.callVisionApi = base64Image => {
-  console.log(`yoy ${base64Image}  ${config.GOOGLE_VISION_API_KEY}`);
+  if (!base64Image || typeof base64Image !== 'string') {
+    throw new Error('Input is not a valid base64 string');
+  }
+
+  //ToDo: Use axios to make post call to vision api
 };
