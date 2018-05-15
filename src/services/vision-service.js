@@ -14,22 +14,34 @@ exports.callVisionApi = base64Image => {
           }
         ],
         image: {
-          source: {
-            imageUri: 'gs://bucket-name-123/abbey_road.jpg'
-          }
+          content: base64Image
         }
       }
     ]
   };
 
-  //ToDo: Use axios to make post call to vision api
-  axios
-    .post(
-      `${config.GOOGLE_VISION_ENDPOINT}?key=${config.GOOGLE_VISION_API_KEY}`,
-      {
-        ...requestBody
-      }
-    )
-    .then(response => console.log(response))
-    .catch(error => console.log(error));
+  return (
+    axios
+      .post(
+        `https://vision.googleapis.com/v1/images:annotate?key=${
+          config.GOOGLE_VISION_API_KEY
+        }`,
+        {
+          ...requestBody
+        }
+      )
+      // .then(response => console.log(response.data.responses[0]))
+      .then(response => {
+        if (response.data.responses[0].error) {
+          return response.data.responses[0];
+        }
+
+        return response.data.responses[0].fullTextAnnotation.text
+          .split(',')
+          .map(ingredient => {
+            return ingredient.replace(/r\n|\r|\n|$/, '');
+          });
+      })
+      .catch(error => console.log('error', error))
+  );
 };
