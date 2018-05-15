@@ -1,4 +1,5 @@
 const VisionService = require('../services/vision-service/vision-service');
+const FirebaseService = require('../services/firebase-service/firebase-service');
 
 class ApiController {
   constructor() {
@@ -6,15 +7,25 @@ class ApiController {
   }
   static async makeCall(req, res, next) {
     if (!req.data) {
-      res.json({ error: { code: 1, message: 'Data object is empty' } });
-    } else {
-      const { data } = req;
-      const ingredients = await VisionService.callVisionApi(data);
-      const activeIngredients = await FirebaseService.validateIngredients(
-        ingredients
-      );
-      res.json({ ...activeIngredients });
+      return res
+        .status(500)
+        .json({ error: { code: 1, message: 'Data object is empty' } });
     }
+    const { data } = req;
+    const ingredients = await VisionService.callVisionApi(data);
+    const { error } = ingredients;
+    if (error) {
+      res
+        .status(500)
+        .json({ error: { code: 2, message: 'Invalid data object' } });
+    }
+    const activeIngredients = await FirebaseService.validateIngredients(
+      ingredients
+    );
+
+    return activeIngredients
+      ? res.json({ ...activeIngredients })
+      : res.json([]);
   }
 }
 
