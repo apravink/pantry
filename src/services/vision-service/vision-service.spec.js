@@ -56,7 +56,7 @@ describe(`VisionService`, () => {
               expect(actualResult).to.be.an('array');
               done();
             })
-            .catch(error => done(error));
+            .catch(error => done(error.data));
         }
       }
     );

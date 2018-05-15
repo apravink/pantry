@@ -22,7 +22,7 @@ describe('Firebase Service', () => {
   });
 
   it('should return a categorized array of ingredients for valid ingredients', async () => {
-    //Arrange
+    // Arrange
     const ingredientList = ['sugar', 'palm oil'];
     const expectedResult = [
       {
