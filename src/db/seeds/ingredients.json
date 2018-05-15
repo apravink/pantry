@@ -1,0 +1,26 @@
+[
+  {
+    "category": "sugar",
+    "description": "Sugar is terrible for you",
+    "ingredients": [
+      "sugar",
+      "brown sugar",
+      "high fructose corn syrup",
+      "honey",
+      "raw sugar"
+    ]
+  },
+  {
+    "category": "palm oil",
+    "description": "Palm oil kills the orangutans",
+    "ingredients": [
+      "palm oil",
+      "palm kernal oil",
+      "palm kernal stearin",
+      "PK",
+      "PKO",
+      "PHPKO",
+      "stearic acid"
+    ]
+  }
+]

@@ -1,4 +1,5 @@
-const VisionService = require('../services/vision-service');
+const VisionService = require('../services/vision-service/vision-service');
+
 class ApiController {
   constructor() {
     this.makeCall = this.makeCall.bind(this);

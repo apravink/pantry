@@ -37,24 +37,29 @@ describe(`VisionService`, () => {
       .then(actualResult => {
         // Assert
         expect(actualResult).to.deep.equal(expectedResult);
+        done();
       })
       .catch(error => done(error));
   });
-  it.only('should return an array of ingredients for a valid base64 image string', done => {
+
+  it('should return an array of ingredients for a valid base64 image string', done => {
     // Arrange
 
-    fs.readFile('src/services/assets/test-image.png', 'base64', (err, data) => {
-      if (err) done();
-      else {
-        VisionService.callVisionApi(data)
-          .then(actualResult => {
-            console.log(actualResult);
-            expect([1, 2]).to.be.an('array');
-            done();
-          })
-          .catch(error => done(error));
+    fs.readFile(
+      'src/services/vision-service/assets/test-image.png',
+      'base64',
+      (err, data) => {
+        if (err) done();
+        else {
+          VisionService.callVisionApi(data)
+            .then(actualResult => {
+              expect(actualResult).to.be.an('array');
+              done();
+            })
+            .catch(error => done(error));
+        }
       }
-    });
+    );
 
     // Act
   });

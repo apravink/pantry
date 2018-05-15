@@ -12,11 +12,14 @@
   },
   "scripts": {
     "start": "nodemon --inspect server.js",
-    "test": "node_modules/.bin/mocha --timeout 4000"
+    "test": "node_modules/.bin/mocha --timeout 4000",
+    "seed": "firebase database:set /list src/db/seeds/ingredients.json",
+    "depoy": "firebase deploy"
   },
   "dependencies": {
     "body-parser": "^1.18.2",
     "express": "^4.16.3",
+    "firebase": "^5.0.2",
     "prettier": "^1.12.1"
   },
   "devDependencies": {
