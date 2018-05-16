@@ -6,7 +6,7 @@ const router = require('./src/router/router');
 
 const app = express();
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({ extended: true, limit: '50mb' }));
 const port = process.env.PORT || 3000;
 
 app.use('/api', router);

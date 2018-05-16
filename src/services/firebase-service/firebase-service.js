@@ -28,7 +28,6 @@ exports.validateIngredients = ingredientsFromCamera => {
     .database()
     .ref('/list')
     .orderByKey();
-
   return ingredientsRef.once('value').then(snapshot => {
     const pantry = [...snapshot.val()];
 

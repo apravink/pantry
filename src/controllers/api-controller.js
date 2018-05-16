@@ -15,7 +15,6 @@ class ApiController {
     const { data } = req.body;
     const ingredients = await VisionService.callVisionApi(data);
     const { error } = ingredients;
-    console.log(ingredients);
     if (error || !Array.isArray(ingredients)) {
       return res
         .status(500)
@@ -25,6 +24,7 @@ class ApiController {
     const activeIngredients = await FirebaseService.validateIngredients(
       ingredients
     );
+    console.log(activeIngredients);
 
     return activeIngredients
       ? res.json({ ...activeIngredients })
