@@ -5,20 +5,23 @@ class ApiController {
   constructor() {
     this.makeCall = this.makeCall.bind(this);
   }
+
   static async makeCall(req, res, next) {
-    if (!req.data) {
+    if (!req.body.data) {
       return res
         .status(500)
         .json({ error: { code: 1, message: 'Data object is empty' } });
     }
-    const { data } = req;
+    const { data } = req.body;
     const ingredients = await VisionService.callVisionApi(data);
     const { error } = ingredients;
-    if (error) {
-      res
+    console.log(ingredients);
+    if (error || !Array.isArray(ingredients)) {
+      return res
         .status(500)
         .json({ error: { code: 2, message: 'Invalid data object' } });
     }
+
     const activeIngredients = await FirebaseService.validateIngredients(
       ingredients
     );

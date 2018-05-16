@@ -1,5 +1,14 @@
 const firebase = require('firebase');
 require('dotenv').config();
+const { compareTwoStrings } = require('string-similarity');
+
+// const array1 = ['ball', 'you', 'weights'];
+// const array2 = ['sWetts', 'child', 'You.', 'barbell'];
+
+// const array3 = array1.filter(i =>
+//   array2.some(j => compareTwoStrings(i, j) > 0.6)
+// );
+// console.log(array3);
 
 const config = {
   apiKey: process.env.apiKey,
@@ -24,11 +33,13 @@ exports.validateIngredients = ingredientsFromCamera => {
     const pantry = [...snapshot.val()];
 
     activeIngredients = pantry
-      .filter(pantryItem => {
-        return pantryItem.ingredients.some(i =>
-          ingredientsFromCamera.includes(i)
-        );
-      })
+      .filter(pantryItem =>
+        pantryItem.ingredients.some(i =>
+          ingredientsFromCamera.some(j => {
+            return compareTwoStrings(i, j) > 0.6;
+          })
+        )
+      )
       .reduce((acc, pantryItem) => {
         return [
           ...acc,
@@ -36,7 +47,9 @@ exports.validateIngredients = ingredientsFromCamera => {
             category: pantryItem.category,
             description: pantryItem.description,
             foundIngredients: pantryItem.ingredients.filter(ingredient =>
-              ingredientsFromCamera.includes(ingredient)
+              ingredientsFromCamera.some(i => {
+                return compareTwoStrings(ingredient, i) > 0.6;
+              })
             )
           }
         ];

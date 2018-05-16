@@ -37,7 +37,7 @@ exports.callVisionApi = base64Image => {
       return response.data.responses[0].fullTextAnnotation.text
         .split(',')
         .map(ingredient => {
-          return ingredient.replace(/r\n|\r|\n|$/, '');
+          return ingredient.toLowerCase().replace(/r\n|\r|\n|$/, '');
         });
     })
     .catch(error => console.error('error', error));
