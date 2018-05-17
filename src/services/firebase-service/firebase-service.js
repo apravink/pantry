@@ -1,35 +1,19 @@
 const firebase = require('firebase');
 require('dotenv').config();
 const { compareTwoStrings } = require('string-similarity');
+const axios = require('axios')
 
-// const array1 = ['ball', 'you', 'weights'];
-// const array2 = ['sWetts', 'child', 'You.', 'barbell'];
-
-// const array3 = array1.filter(i =>
-//   array2.some(j => compareTwoStrings(i, j) > 0.6)
-// );
-// console.log(array3);
-
-const config = {
-  apiKey: process.env.apiKey,
-  authDomain: process.env.authDomain,
-  databaseURL: process.env.databaseURL,
-  projectId: process.env.projectId,
-  storageBucket: process.env.storageBucket,
-  messagingSenderId: process.env.messagingSenderId
-};
-firebase.initializeApp(config);
 let activeIngredients;
 exports.validateIngredients = ingredientsFromCamera => {
   if (ingredientsFromCamera.length === 0) {
     return null;
   }
-  const ingredientsRef = firebase
-    .database()
-    .ref('/list')
-    .orderByKey();
-  return ingredientsRef.once('value').then(snapshot => {
-    const pantry = [...snapshot.val()];
+
+  return axios
+  .get('https://durable-retina-113422.firebaseio.com/list.json')
+  .then(snapshot => {
+    console.log(snapshot.data)
+    const pantry = [...snapshot.data];
 
     activeIngredients = pantry
       .filter(pantryItem =>
@@ -45,16 +29,14 @@ exports.validateIngredients = ingredientsFromCamera => {
           {
             category: pantryItem.category,
             description: pantryItem.description,
-            foundIngredients: pantryItem.ingredients.filter(ingredient =>
-              ingredientsFromCamera.some(i => {
+            foundIngredients: ingredientsFromCamera.filter(ingredient =>
+              pantryItem.ingredients.some(i => {
                 return compareTwoStrings(ingredient, i) > 0.6;
               })
             )
           }
         ];
       }, []);
-
-    firebase.database().goOffline();
     return activeIngredients;
   });
 };

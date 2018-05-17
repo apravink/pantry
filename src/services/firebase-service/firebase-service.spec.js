@@ -21,7 +21,7 @@ describe('Firebase Service', () => {
     expect(actualResult).to.be.null;
   });
 
-  it.only('should return a categorized array of ingredients for valid ingredients', async () => {
+  it('should return a categorized array of ingredients for valid ingredients', async () => {
     // Arrange
     const ingredientList = ['sugar', 'palm oil'];
     const expectedResult = [

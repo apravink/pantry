@@ -24,7 +24,7 @@ class ApiController {
     const activeIngredients = await FirebaseService.validateIngredients(
       ingredients
     );
-    console.log(activeIngredients);
+    console.log("Request recieved");
 
     return activeIngredients
       ? res.json({ ...activeIngredients })
