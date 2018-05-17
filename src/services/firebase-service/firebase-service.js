@@ -1,5 +1,3 @@
-const firebase = require('firebase');
-require('dotenv').config();
 const { compareTwoStrings } = require('string-similarity');
 const axios = require('axios')
 
